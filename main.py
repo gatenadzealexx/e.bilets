@@ -40,17 +40,17 @@ def app():
 
             elif cmd==2:
                 print("=" * 20)
-                print("Список билетов :")
+                print("Список мест :")
                 bilets = db.get_all_bilets()
                 for bilet in bilets:
-                    print(f"ID: {bilet[0]} - Номер билета: {bilet[1]} Свободное или занятое место :{bilet[2]}.")
+                    print(f"ID: {bilet[0]} - Номер билета: {bilet[1]} , {bilet[2]}.")
                 print("=" * 20)
 
             elif cmd==3:
                 print("=" * 20)
                 events_bilets = db.get_events_full_info()
                 event_info = events_bilets
-                print(f'ID: {event_info[0]} - Название: {event_info[1]} билет: {event_info[2]}')
+                print(event_info)
                 print("=" * 20)
 
             elif cmd==4:
@@ -85,9 +85,9 @@ def app():
             elif cmd==7:
                 print("=" * 20)
                 print("Отмена бронирования:")
-                bilet_id = int(input("Введи номер билета: "))
+                bilets = int(input("Введи номер билета: "))
                 try:
-                    db.delite_bilets(bilet_id)
+                    db.delite_bilets(bilets)
                     print("Бронь отменена")
                 except Exception as e:
                     print(f"Что-то пошло не так! {e}")

@@ -60,9 +60,21 @@ def get_all_bilets():
 
 def get_events_full_info():
     with connect_db() as conn, conn.cursor() as cur:
-        cur.execute("SELECT * FROM events_bilets")
-        events_bilets = cur.fetchall()
-        return
+
+        cur.execute("SELECT name_event FROM eventes ")
+        event_info = cur.fetchone()
+
+        cur.execute("""
+                        SELECT bilets, type_bilets
+                        FROM events_bilets 
+                            JOIN bilets ON events_bilets.bilet_id = bilets.id
+        """)
+        bilets = cur.fetchall()
+
+        return {
+                "event_info": event_info,
+                "bilets": bilets
+        }
 
 
 def create_events(name_event):
@@ -78,11 +90,13 @@ def search_events(query):
 
 def create_bilets(bilet_id):
     with connect_db() as conn, conn.cursor() as cur:
-        cur.execute("INSERT INTO bilets (bilets) VALUES (%s)", (bilet_id,))
+        cur.execute("INSERT INTO bilets (bilets, type_bilets) VALUES (%s, 'Занято')", (bilet_id,))
 
-def delite_bilets(bilet_id):
+
+def delite_bilets(bilets):
     with connect_db() as conn, conn.cursor() as cur:
-        cur.execute("DELETE FROM bilets WHERE bilet_id=%s", (bilet_id,))
+        cur.execute("DELETE FROM bilets WHERE bilets=%s", (bilets,))
+
 
 
 
